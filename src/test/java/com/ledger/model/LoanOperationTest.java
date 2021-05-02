@@ -23,7 +23,6 @@ class LoanOperationTest {
                 .totalAmountPaid(0)
                 .remainingAmountToBePaid(5300)
                 .emiAmount(442)
-                .currentEmiNumber(0)
                 .build();
         verify(bankState).addInitialTransaction(transaction);
     }

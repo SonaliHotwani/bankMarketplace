@@ -19,7 +19,6 @@ public class LoanOperation extends BankOperation {
                 .numberOfRemainingEmi(numberOfRemainingEmi)
                 .totalAmountPaid(0)
                 .remainingAmountToBePaid(this.loanDetails.totalAmount())
-                .currentEmiNumber(0)
                 .build();
         bankStateForUser.addInitialTransaction(transaction);
     }

@@ -32,8 +32,12 @@ public class BankStateForUser {
     }
 
     void addAllTransactionsUpTo(Integer emiNumber, Integer lumpSumAmount) {
-        final Transaction lastTransaction = transactions.stream().max(Comparator.comparingInt(Transaction::getCurrentEmiNumber)).get();
-        for (int i = lastTransaction.getCurrentEmiNumber() + 1; i < emiNumber; i++) {
+        Integer previousEmiNumber = 0;
+        final Optional<Transaction> lastTransaction = transactions.stream()
+                .filter(transaction -> transaction.getCurrentEmiNumber() != null)
+                .max(Comparator.comparingInt(Transaction::getCurrentEmiNumber));
+        if (lastTransaction.isPresent()) previousEmiNumber = lastTransaction.get().getCurrentEmiNumber();
+        for (int i = previousEmiNumber + 1; i < emiNumber; i++) {
             addTransaction(i, 0);
         }
         addTransaction(emiNumber, lumpSumAmount);
@@ -52,7 +56,7 @@ public class BankStateForUser {
     }
 
     private Optional<Transaction> findTransaction(Integer emiNumber) {
-        return transactions.stream().filter(transaction -> transaction.getCurrentEmiNumber().equals(emiNumber)).findFirst();
+        return transactions.stream().filter(transaction -> Objects.nonNull(transaction.getCurrentEmiNumber()) && transaction.getCurrentEmiNumber().equals(emiNumber)).findFirst();
     }
 
     private void addTransaction(Integer emiNumber, Integer lumpSumAmount) {
