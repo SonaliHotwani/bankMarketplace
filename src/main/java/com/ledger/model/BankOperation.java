@@ -9,6 +9,6 @@ public abstract class BankOperation {
     private Command command;
     private BankUser bankUser;
 
-    public abstract void updateBankState(BankStateForUser bankStateForUser);
+    public abstract void update(BankStateForUser bankStateForUser);
 }
 

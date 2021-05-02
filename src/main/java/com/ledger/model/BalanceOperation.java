@@ -1,5 +1,7 @@
 package com.ledger.model;
 
+import com.ledger.exception.EmiOutOfTenureException;
+
 public class BalanceOperation extends BankOperation {
     private Integer emiNumber;
 
@@ -9,13 +11,22 @@ public class BalanceOperation extends BankOperation {
     }
 
     @Override
-    public void updateBankState(BankStateForUser bankStateForUser) {
-        bankStateForUser.updateAmountAndRemainingEmi(emiNumber);
-        System.out.println(
-                String.format("%s %s %d %d",
-                        getBankUser().getBankName(),
-                        getBankUser().getBorrowerName(),
-                        bankStateForUser.totalAmountPaid,
-                        bankStateForUser.numberOfRemainingEmi));
+    public void update(BankStateForUser bankStateForUser) {
+        try {
+            final Transaction transaction = bankStateForUser.getTransactionFor(emiNumber);
+            System.out.println(
+                    String.format("%s %s %d %d",
+                            getBankUser().getBankName(),
+                            getBankUser().getBorrowerName(),
+                            transaction.getTotalAmountPaid(),
+                            transaction.getNumberOfRemainingEmi()));
+        } catch (EmiOutOfTenureException e) {
+            System.out.println(
+                    String.format("%s %s %s",
+                            getBankUser().getBankName(),
+                            getBankUser().getBorrowerName(),
+                            e.getMessage()));
+
+        }
     }
 }

@@ -9,11 +9,15 @@ public class LoanOperation extends BankOperation {
     }
 
     @Override
-    public void updateBankState(BankStateForUser bankStateForUser) {
-        bankStateForUser.setNumberOfRemainingEmi(this.loanDetails.numberOfEmis());
-        bankStateForUser.setNumberOfTotalEmi(this.loanDetails.numberOfEmis());
-        bankStateForUser.setRemainingAmountToBePaid(this.loanDetails.totalAmount());
-        bankStateForUser.setEmiAmount(this.loanDetails.monthlyEmiAmount());
-        bankStateForUser.setTotalAmountPaid(0);
+    public void update(BankStateForUser bankStateForUser) {
+        final Integer numberOfRemainingEmi = this.loanDetails.numberOfEmis();
+        final Transaction transaction = Transaction.builder().emiAmount(this.loanDetails.monthlyEmiAmount())
+                .numberOfTotalEmi(numberOfRemainingEmi)
+                .numberOfRemainingEmi(numberOfRemainingEmi)
+                .totalAmountPaid(0)
+                .remainingAmountToBePaid(this.loanDetails.totalAmount())
+                .currentEmiNumber(0)
+                .build();
+        bankStateForUser.addInitialTransaction(transaction);
     }
 }

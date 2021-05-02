@@ -1,5 +1,6 @@
 package com.ledger;
 
+import com.ledger.exception.InvalidBankOperationException;
 import com.ledger.service.BankOperationsHandler;
 
 import java.io.IOException;
@@ -15,8 +16,12 @@ public class LedgerCoMarketplace {
             System.exit(0);
         }
 
-        final List<String> bankOperations = Files.readAllLines(Paths.get("/Users/admin/Documents/geektrustProblems/src/main/resources/BankOperations.txt"));
+        try {
+            final List<String> bankOperations = Files.readAllLines(Paths.get("/Users/admin/Documents/geektrustProblems/src/main/resources/BankOperations.txt"));
 
-        new BankOperationsHandler().handle(bankOperations);
+            new BankOperationsHandler().handle(bankOperations);
+        } catch (InvalidBankOperationException exception) {
+            System.err.println(exception.getMessage());
+        }
     }
 }
