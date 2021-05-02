@@ -1,6 +1,9 @@
 package com.ledger.model;
 
+import lombok.Getter;
+
 public class LoanOperation extends BankOperation {
+    @Getter
     private LoanDetails loanDetails;
 
     public LoanOperation(Command command, BankUser bankUser, LoanDetails loanDetails) {

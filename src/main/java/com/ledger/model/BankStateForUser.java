@@ -1,6 +1,7 @@
 package com.ledger.model;
 
 import com.ledger.exception.EmiOutOfTenureException;
+import lombok.Getter;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -13,6 +14,7 @@ public class BankStateForUser {
     private Integer remainingAmountToBePaid;
     private Integer emiAmount;
     private Integer numberOfTotalEmi;
+    @Getter
     private List<Transaction> transactions;
 
     public BankStateForUser() {
@@ -20,6 +22,7 @@ public class BankStateForUser {
     }
 
     void addInitialTransaction(Transaction transaction) {
+        transactions = new ArrayList<>();
         transactions.add(transaction);
         numberOfTotalEmi = transaction.getNumberOfTotalEmi();
         numberOfRemainingEmi = transaction.getNumberOfRemainingEmi();
@@ -28,19 +31,19 @@ public class BankStateForUser {
         emiAmount = transaction.getEmiAmount();
     }
 
-    void addAllTransactionsUpTo(Transaction transaction) {
+    void addAllTransactionsUpTo(Integer emiNumber, Integer lumpSumAmount) {
         final Transaction lastTransaction = transactions.stream().max(Comparator.comparingInt(Transaction::getCurrentEmiNumber)).get();
-        for (int i = lastTransaction.getCurrentEmiNumber() + 1; i < transaction.getCurrentEmiNumber(); i++) {
+        for (int i = lastTransaction.getCurrentEmiNumber() + 1; i < emiNumber; i++) {
             addTransaction(i, 0);
         }
-        addTransaction(transaction.getCurrentEmiNumber(), transaction.getLumpSumAmount());
+        addTransaction(emiNumber, lumpSumAmount);
     }
 
     Transaction getTransactionFor(Integer emiNumber) throws EmiOutOfTenureException {
         final Optional<Transaction> transactionForEmiNumber = findTransaction(emiNumber);
         if (transactionForEmiNumber.isPresent()) return transactionForEmiNumber.get();
         else {
-            addAllTransactionsUpTo(Transaction.builder().currentEmiNumber(emiNumber).build());
+            addAllTransactionsUpTo(emiNumber, 0);
             final Optional<Transaction> transaction = findTransaction(emiNumber);
             if (transaction.isPresent())
                 return transaction.get();

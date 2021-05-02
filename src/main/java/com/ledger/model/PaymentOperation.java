@@ -1,5 +1,8 @@
 package com.ledger.model;
 
+import lombok.Getter;
+
+@Getter
 public class PaymentOperation extends BankOperation {
     private Integer lumpSumAmount;
     private Integer currentEmiNumber;
@@ -12,10 +15,6 @@ public class PaymentOperation extends BankOperation {
 
     @Override
     public void update(BankStateForUser bankStateForUser) {
-        final Transaction transaction = Transaction.builder()
-                .currentEmiNumber(currentEmiNumber)
-                .lumpSumAmount(lumpSumAmount).build();
-
-        bankStateForUser.addAllTransactionsUpTo(transaction);
+        bankStateForUser.addAllTransactionsUpTo(currentEmiNumber, lumpSumAmount);
     }
 }

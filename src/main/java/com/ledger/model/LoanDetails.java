@@ -1,12 +1,14 @@
 package com.ledger.model;
 
 import lombok.AllArgsConstructor;
+import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 
 @AllArgsConstructor
+@EqualsAndHashCode
 public class LoanDetails {
 
     private BigDecimal principalAmount;
