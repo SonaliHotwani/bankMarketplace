@@ -1,46 +1,44 @@
 package com.ledger.service;
 
-import com.ledger.model.BankStateForUser;
+import com.ledger.model.BalanceOperation;
 import com.ledger.model.BankUser;
+import com.ledger.model.LoanOperation;
+import com.ledger.model.PaymentOperation;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.*;
 
 class BankOperationHandlerTest {
 
     @Test
-    void shouldHandleBankOperationsAndUpdateBankStateForOneUser() {
+    void shouldHandleOperationAndUpdateBankState() {
+        final BankOperationTransformer transformer = mock(BankOperationTransformer.class);
+        final BankOperationHandler handler = new BankOperationHandler(transformer);
         List<String> bankOperationsString = Arrays.asList(
                 "LOAN IDIDI Dale 5000 1 6",
                 "PAYMENT IDIDI Dale 1000 5",
                 "BALANCE IDIDI Dale 3");
-        final BankOperationHandler handler = new BankOperationHandler();
+        final LoanOperation loanOperation = mock(LoanOperation.class);
+        final PaymentOperation paymentOperation = mock(PaymentOperation.class);
+        final BalanceOperation balanceOperation = mock(BalanceOperation.class);
+
+        final BankUser bankUser = new BankUser("IDIDI", "Dale");
+        when(loanOperation.getBankUser()).thenReturn(bankUser);
+        when(paymentOperation.getBankUser()).thenReturn(bankUser);
+        when(balanceOperation.getBankUser()).thenReturn(bankUser);
+
+        when(transformer.getBankOperation("LOAN IDIDI Dale 5000 1 6")).thenReturn(loanOperation);
+        when(transformer.getBankOperation("PAYMENT IDIDI Dale 1000 5")).thenReturn(paymentOperation);
+        when(transformer.getBankOperation("BALANCE IDIDI Dale 3")).thenReturn(balanceOperation);
+
         handler.handle(bankOperationsString);
 
-        final BankStateForUser actualBankState = handler.getBankStateForUsers().get(new BankUser("IDIDI", "Dale"));
-        assertEquals(1, handler.getBankStateForUsers().size());
-        assertEquals(6, actualBankState.getTransactions().size());
+
+        verify(loanOperation).update(handler.getBankStateFor(bankUser));
+        verify(paymentOperation).update(handler.getBankStateFor(bankUser));
+        verify(balanceOperation).update(handler.getBankStateFor(bankUser));
     }
-
-    @Test
-    void shouldHandleBankOperationsAndUpdateBankStateForMultipleUsers() {
-        List<String> bankOperationsString = Arrays.asList(
-                "LOAN IDIDI Dale 5000 1 6",
-                "LOAN MBI Harry 10000 3 7",
-                "PAYMENT IDIDI Dale 1000 5",
-                "BALANCE MBI Harry 12",
-                "BALANCE IDIDI Dale 3");
-        final BankOperationHandler handler = new BankOperationHandler();
-        handler.handle(bankOperationsString);
-
-        final BankStateForUser bankStateForDale = handler.getBankStateForUsers().get(new BankUser("IDIDI", "Dale"));
-        final BankStateForUser bankStateForHarry = handler.getBankStateForUsers().get(new BankUser("MBI", "Harry"));
-        assertEquals(2, handler.getBankStateForUsers().size());
-        assertEquals(6, bankStateForDale.getTransactions().size());
-        assertEquals(13, bankStateForHarry.getTransactions().size());
-    }
-
 }

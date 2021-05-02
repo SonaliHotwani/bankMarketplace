@@ -6,9 +6,9 @@ import org.apache.commons.lang3.EnumUtils;
 
 import java.math.BigDecimal;
 
-class BankOperationTransformer {
+public class BankOperationTransformer {
 
-    static BankOperation getBankOperation(String bankOperation) {
+    BankOperation getBankOperation(String bankOperation) {
         final String[] attributes = bankOperation.split(" ");
         if (attributes.length > 3 && EnumUtils.isValidEnum(Command.class, attributes[0])) {
             Command command = Command.valueOf(attributes[0]);
@@ -25,7 +25,7 @@ class BankOperationTransformer {
         throw new InvalidBankOperationException("Operation: " + bankOperation + " not supported");
     }
 
-    private static PaymentOperation createPaymentOperation(String[] attributes, BankUser bankUser) {
+    private PaymentOperation createPaymentOperation(String[] attributes, BankUser bankUser) {
         if (attributes.length == 5)
             return new PaymentOperation(Command.PAYMENT,
                     bankUser,
@@ -34,13 +34,13 @@ class BankOperationTransformer {
         throw new InvalidBankOperationException("Missing information in PAYMENT Command");
     }
 
-    private static BalanceOperation createBalanceOperation(String[] attributes, BankUser bankUser) {
+    private BalanceOperation createBalanceOperation(String[] attributes, BankUser bankUser) {
         return new BalanceOperation(Command.BALANCE,
                 bankUser,
                 Integer.valueOf(attributes[3]));
     }
 
-    private static LoanOperation createLoanOperation(String[] attributes, BankUser bankUser) {
+    private LoanOperation createLoanOperation(String[] attributes, BankUser bankUser) {
         if (attributes.length == 6)
             return new LoanOperation(Command.LOAN,
                     bankUser,

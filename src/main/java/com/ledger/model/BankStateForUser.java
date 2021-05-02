@@ -21,7 +21,7 @@ public class BankStateForUser {
         transactions = new ArrayList<>();
     }
 
-    void addInitialTransaction(Transaction transaction) {
+    void setInitialStateWith(Transaction transaction) {
         transactions = new ArrayList<>();
         transactions.add(transaction);
         numberOfTotalEmi = transaction.getNumberOfTotalEmi();

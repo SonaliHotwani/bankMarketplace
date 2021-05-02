@@ -1,6 +1,7 @@
 package com.ledger;
 
 import com.ledger.service.BankOperationHandler;
+import com.ledger.service.BankOperationTransformer;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -17,6 +18,6 @@ public class LedgerCoMarketplace {
         }
         final List<String> lines = Files.readAllLines(Paths.get(args[0]));
         final List<String> bankOperations = lines.stream().filter(line -> !line.isEmpty()).collect(Collectors.toList());
-        new BankOperationHandler().handle(bankOperations);
+        new BankOperationHandler(new BankOperationTransformer()).handle(bankOperations);
     }
 }

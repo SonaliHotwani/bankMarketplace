@@ -24,6 +24,6 @@ class LoanOperationTest {
                 .remainingAmountToBePaid(5300)
                 .emiAmount(442)
                 .build();
-        verify(bankState).addInitialTransaction(transaction);
+        verify(bankState).setInitialStateWith(transaction);
     }
 }

@@ -20,6 +20,6 @@ public class LoanOperation extends BankOperation {
                 .totalAmountPaid(0)
                 .remainingAmountToBePaid(this.loanDetails.totalAmount())
                 .build();
-        bankStateForUser.addInitialTransaction(transaction);
+        bankStateForUser.setInitialStateWith(transaction);
     }
 }

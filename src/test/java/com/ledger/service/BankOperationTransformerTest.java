@@ -6,10 +6,11 @@ import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
 
-import static com.ledger.service.BankOperationTransformer.getBankOperation;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BankOperationTransformerTest {
+
+    private BankOperationTransformer transformer = new BankOperationTransformer();
 
     @Test
     void shouldReturnLoanOperationInstanceFromLoanCommandString() {
@@ -21,7 +22,7 @@ class BankOperationTransformerTest {
         );
         final BankUser bankUser = new BankUser("IDIDI", "Dale");
 
-        final BankOperation bankOperation = getBankOperation(loanCommandString);
+        final BankOperation bankOperation = transformer.getBankOperation(loanCommandString);
 
         assertTrue(bankOperation instanceof LoanOperation);
         assertEquals(bankUser, bankOperation.getBankUser());
@@ -31,7 +32,7 @@ class BankOperationTransformerTest {
     @Test
     void shouldThrowExceptionIfLoanAttributesAreMissingInTheCommand() {
         final String loanCommandString = "LOAN IDIDI Dale 5000 1";
-        assertThrows(InvalidBankOperationException.class, () -> getBankOperation(loanCommandString));
+        assertThrows(InvalidBankOperationException.class, () -> transformer.getBankOperation(loanCommandString));
     }
 
     @Test
@@ -40,7 +41,7 @@ class BankOperationTransformerTest {
 
         final BankUser bankUser = new BankUser("IDIDI", "Dale");
 
-        final BankOperation bankOperation = getBankOperation(paymentCommandString);
+        final BankOperation bankOperation = transformer.getBankOperation(paymentCommandString);
 
         assertTrue(bankOperation instanceof PaymentOperation);
         assertEquals(bankUser, bankOperation.getBankUser());
@@ -51,7 +52,7 @@ class BankOperationTransformerTest {
     @Test
     void shouldThrowExceptionIfPaymentAttributesAreMissingInTheCommand() {
         final String paymentCommandString = "PAYMENT IDIDI Dale 1000";
-        assertThrows(InvalidBankOperationException.class, () -> getBankOperation(paymentCommandString));
+        assertThrows(InvalidBankOperationException.class, () -> transformer.getBankOperation(paymentCommandString));
     }
 
     @Test
@@ -60,7 +61,7 @@ class BankOperationTransformerTest {
 
         final BankUser bankUser = new BankUser("IDIDI", "Dale");
 
-        final BankOperation bankOperation = getBankOperation(balanceCommandString);
+        final BankOperation bankOperation = transformer.getBankOperation(balanceCommandString);
 
         assertTrue(bankOperation instanceof BalanceOperation);
         assertEquals(bankUser, bankOperation.getBankUser());
@@ -70,18 +71,18 @@ class BankOperationTransformerTest {
     @Test
     void shouldThrowExceptionIfBalanceAttributesAreMissingInTheCommand() {
         final String balanceCommandString = "BALANCE IDIDI Dale";
-        assertThrows(InvalidBankOperationException.class, () -> getBankOperation(balanceCommandString));
+        assertThrows(InvalidBankOperationException.class, () -> transformer.getBankOperation(balanceCommandString));
     }
 
     @Test
     void shouldThrowExceptionForAnyOtherCommandBesidesLoanPaymentAndBalance() {
         final String otherCommandString = "VIEW IDIDI Dale 1";
-        assertThrows(InvalidBankOperationException.class, () -> getBankOperation(otherCommandString));
+        assertThrows(InvalidBankOperationException.class, () -> transformer.getBankOperation(otherCommandString));
     }
 
     @Test
     void shouldThrowExceptionIfBorrowerNameIsMissing() {
         final String otherCommandString = "BALANCE IDIDI ";
-        assertThrows(InvalidBankOperationException.class, () -> getBankOperation(otherCommandString));
+        assertThrows(InvalidBankOperationException.class, () -> transformer.getBankOperation(otherCommandString));
     }
 }

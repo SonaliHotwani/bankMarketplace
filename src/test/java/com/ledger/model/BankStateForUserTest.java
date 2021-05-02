@@ -18,7 +18,7 @@ class BankStateForUserTest {
                 .currentEmiNumber(0)
                 .build();
 
-        bankState.addInitialTransaction(transaction);
+        bankState.setInitialStateWith(transaction);
 
 
         assertEquals(1, bankState.getTransactions().size());
