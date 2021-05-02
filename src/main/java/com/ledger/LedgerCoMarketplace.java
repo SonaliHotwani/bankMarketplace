@@ -1,6 +1,5 @@
 package com.ledger;
 
-import com.ledger.exception.InvalidBankOperationException;
 import com.ledger.service.BankOperationHandler;
 
 import java.io.IOException;
@@ -16,13 +15,8 @@ public class LedgerCoMarketplace {
             System.err.println("Test input not provided");
             System.exit(0);
         }
-
-        try {
-            final List<String> lines = Files.readAllLines(Paths.get(args[0]));
-            final List<String> bankOperations = lines.stream().filter(line -> !line.isEmpty()).collect(Collectors.toList());
-            new BankOperationHandler().handle(bankOperations);
-        } catch (InvalidBankOperationException exception) {
-            System.err.println(exception.getMessage());
-        }
+        final List<String> lines = Files.readAllLines(Paths.get(args[0]));
+        final List<String> bankOperations = lines.stream().filter(line -> !line.isEmpty()).collect(Collectors.toList());
+        new BankOperationHandler().handle(bankOperations);
     }
 }

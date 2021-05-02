@@ -1,5 +1,6 @@
 package com.ledger.service;
 
+import com.ledger.exception.InvalidBankOperationException;
 import com.ledger.model.BankOperation;
 import com.ledger.model.BankStateForUser;
 import com.ledger.model.BankUser;
@@ -17,11 +18,15 @@ public class BankOperationHandler {
     private Map<BankUser, BankStateForUser> bankStateForUsers = new HashMap<>();
 
     public void handle(List<String> bankOperationsString) {
-        bankOperationsString.forEach(bankOperation -> {
-            BankOperation operation = getBankOperation(bankOperation);
-            setInitialBankState(operation);
-            operation.update(getBankStateFor(operation.getBankUser()));
-        });
+        try {
+            bankOperationsString.forEach(bankOperation -> {
+                BankOperation operation = getBankOperation(bankOperation);
+                setInitialBankState(operation);
+                operation.update(getBankStateFor(operation.getBankUser()));
+            });
+        } catch (InvalidBankOperationException exception) {
+            System.err.println(exception.getMessage());
+        }
     }
 
     private void setInitialBankState(BankOperation operation) {
