@@ -29,7 +29,7 @@ public class BankOperationTransformer {
         if (attributes.length == 5)
             return new PaymentOperation(Command.PAYMENT,
                     bankUser,
-                    Integer.valueOf(attributes[3]),
+                    new BigDecimal(attributes[3]).intValue(),
                     Integer.valueOf(attributes[4]));
         throw new InvalidBankOperationException("Missing information in PAYMENT Command");
     }
