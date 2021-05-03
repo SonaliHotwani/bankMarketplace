@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.*;
 
-public class BankStateForUser {
+public class BankState {
 
     private Integer totalAmountPaid;
     private Integer numberOfRemainingEmi;
@@ -17,7 +17,7 @@ public class BankStateForUser {
     @Getter
     private List<Transaction> transactions;
 
-    public BankStateForUser() {
+    public BankState() {
         transactions = new ArrayList<>();
     }
 

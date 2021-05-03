@@ -1,6 +1,6 @@
 package com.ledger.service;
 
-import com.ledger.model.BankStateForUser;
+import com.ledger.model.BankState;
 import com.ledger.model.BankUser;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ class BankOperationHandlerIntegrationTest {
         final BankOperationHandler handler = new BankOperationHandler(new BankOperationTransformer());
         handler.handle(bankOperationsString);
 
-        final BankStateForUser actualBankState = handler.getBankStateFor(new BankUser("IDIDI", "Dale"));
+        final BankState actualBankState = handler.getBankStateFor(new BankUser("IDIDI", "Dale"));
         assertEquals(6, actualBankState.getTransactions().size());
     }
 
@@ -35,8 +35,8 @@ class BankOperationHandlerIntegrationTest {
         final BankOperationHandler handler = new BankOperationHandler(new BankOperationTransformer());
         handler.handle(bankOperationsString);
 
-        final BankStateForUser bankStateForDale = handler.getBankStateFor(new BankUser("IDIDI", "Dale"));
-        final BankStateForUser bankStateForHarry = handler.getBankStateFor(new BankUser("MBI", "Harry"));
+        final BankState bankStateForDale = handler.getBankStateFor(new BankUser("IDIDI", "Dale"));
+        final BankState bankStateForHarry = handler.getBankStateFor(new BankUser("MBI", "Harry"));
         assertEquals(6, bankStateForDale.getTransactions().size());
         assertEquals(13, bankStateForHarry.getTransactions().size());
     }

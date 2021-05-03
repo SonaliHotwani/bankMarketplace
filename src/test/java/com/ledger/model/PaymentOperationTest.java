@@ -10,7 +10,7 @@ class PaymentOperationTest {
     @Test
     void shouldUpdateBankStateWithAllTransactionsTillCurrentEmiTransaction() {
         final PaymentOperation paymentOperation = new PaymentOperation(Command.PAYMENT, new BankUser("IDIDI", "Dale"), 100, 5);
-        final BankStateForUser bankState = mock(BankStateForUser.class);
+        final BankState bankState = mock(BankState.class);
 
         paymentOperation.update(bankState);
 

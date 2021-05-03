@@ -13,7 +13,7 @@ class BalanceOperationTest {
     void shouldReturnDetailsOfAmountPaidAndRemainingEmi() throws EmiOutOfTenureException {
         final BalanceOperation balanceOperation = new BalanceOperation(Command.BALANCE, new BankUser("IDIDI", "Dale"), 5);
 
-        final BankStateForUser bankState = mock(BankStateForUser.class);
+        final BankState bankState = mock(BankState.class);
         when(bankState.getTransactionFor(5)).thenReturn(Transaction.builder().totalAmountPaid(1000).numberOfRemainingEmi(2).build());
         balanceOperation.update(bankState);
 
@@ -25,7 +25,7 @@ class BalanceOperationTest {
     void shouldReturnErrorMessageForEmiNumberWhichIsOutOfTenure() throws EmiOutOfTenureException {
         final BalanceOperation balanceOperation = new BalanceOperation(Command.BALANCE, new BankUser("IDIDI", "Dale"), 5);
 
-        final BankStateForUser bankState = mock(BankStateForUser.class);
+        final BankState bankState = mock(BankState.class);
         when(bankState.getTransactionFor(5)).thenThrow(new EmiOutOfTenureException(5));
         balanceOperation.update(bankState);
 

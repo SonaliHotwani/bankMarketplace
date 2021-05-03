@@ -14,7 +14,7 @@ class LoanOperationTest {
         final LoanDetails loanDetails = new LoanDetails(new BigDecimal("5000"), new BigDecimal("1"), new BigDecimal("6"));
         final LoanOperation loanOperation = new LoanOperation(Command.LOAN, new BankUser("IDIDI", "Dale"), loanDetails);
 
-        final BankStateForUser bankState = mock(BankStateForUser.class);
+        final BankState bankState = mock(BankState.class);
         loanOperation.update(bankState);
 
         final Transaction transaction = Transaction.builder()

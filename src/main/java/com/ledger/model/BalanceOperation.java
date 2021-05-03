@@ -14,9 +14,9 @@ public class BalanceOperation extends BankOperation {
     }
 
     @Override
-    public void update(BankStateForUser bankStateForUser) {
+    public void update(BankState bankState) {
         try {
-            final Transaction transaction = bankStateForUser.getTransactionFor(emiNumber);
+            final Transaction transaction = bankState.getTransactionFor(emiNumber);
             balanceOutput = String.format("%s %s %d %d",
                     getBankUser().getBankName(),
                     getBankUser().getBorrowerName(),

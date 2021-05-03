@@ -14,7 +14,7 @@ public class PaymentOperation extends BankOperation {
     }
 
     @Override
-    public void update(BankStateForUser bankStateForUser) {
-        bankStateForUser.addAllTransactionsUpTo(currentEmiNumber, lumpSumAmount);
+    public void update(BankState bankState) {
+        bankState.addAllTransactionsUpTo(currentEmiNumber, lumpSumAmount);
     }
 }

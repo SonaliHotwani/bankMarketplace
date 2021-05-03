@@ -6,11 +6,11 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-class BankStateForUserTest {
+class BankStateTest {
 
     @Test
     void shouldUpdateBankStateWithInitialTransaction() {
-        final BankStateForUser bankState = new BankStateForUser();
+        final BankState bankState = new BankState();
         final Transaction transaction = Transaction.builder()
                 .numberOfTotalEmi(12)
                 .numberOfRemainingEmi(12)
@@ -28,7 +28,7 @@ class BankStateForUserTest {
 
     @Test
     void shouldUpdateBankStateWithAllPreviousTransactionsGivenCurrentTransaction() throws EmiOutOfTenureException {
-        final BankStateForUser bankState = new BankStateForUser();
+        final BankState bankState = new BankState();
         final Transaction transaction = Transaction.builder()
                 .numberOfTotalEmi(4)
                 .numberOfRemainingEmi(4)
@@ -68,7 +68,7 @@ class BankStateForUserTest {
 
     @Test
     void shouldUpdateLastEmiAmountIfLumpSumIsPaid() throws EmiOutOfTenureException {
-        final BankStateForUser bankState = new BankStateForUser();
+        final BankState bankState = new BankState();
         final Transaction transaction = Transaction.builder()
                 .numberOfTotalEmi(4)
                 .numberOfRemainingEmi(4)
@@ -93,7 +93,7 @@ class BankStateForUserTest {
 
     @Test
     void shouldThrowEmiOutOfTenureExceptionForOutOfRangeEmi() {
-        final BankStateForUser bankState = new BankStateForUser();
+        final BankState bankState = new BankState();
         final Transaction transaction = Transaction.builder()
                 .numberOfTotalEmi(4)
                 .numberOfRemainingEmi(4)

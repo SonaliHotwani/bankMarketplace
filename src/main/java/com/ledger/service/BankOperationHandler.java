@@ -2,7 +2,7 @@ package com.ledger.service;
 
 import com.ledger.exception.InvalidBankOperationException;
 import com.ledger.model.BankOperation;
-import com.ledger.model.BankStateForUser;
+import com.ledger.model.BankState;
 import com.ledger.model.BankUser;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.Objects;
 
 
 public class BankOperationHandler {
-    private Map<BankUser, BankStateForUser> bankStateForUsers;
+    private Map<BankUser, BankState> bankStateForUsers;
     private BankOperationTransformer transformer;
 
     public BankOperationHandler(BankOperationTransformer transformer) {
@@ -34,10 +34,10 @@ public class BankOperationHandler {
 
     private void setInitialBankState(BankOperation operation) {
         if (Objects.isNull(getBankStateFor(operation.getBankUser())))
-            bankStateForUsers.put(operation.getBankUser(), new BankStateForUser());
+            bankStateForUsers.put(operation.getBankUser(), new BankState());
     }
 
-    BankStateForUser getBankStateFor(BankUser bankUser) {
+    BankState getBankStateFor(BankUser bankUser) {
         return bankStateForUsers.get(bankUser);
     }
 }
