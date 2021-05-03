@@ -56,7 +56,9 @@ public class BankStateForUser {
     }
 
     private Optional<Transaction> findTransaction(Integer emiNumber) {
-        return transactions.stream().filter(transaction -> Objects.nonNull(transaction.getCurrentEmiNumber()) && transaction.getCurrentEmiNumber().equals(emiNumber)).findFirst();
+        return transactions.stream()
+                .filter(transaction -> Objects.nonNull(transaction.getCurrentEmiNumber()) && transaction.getCurrentEmiNumber().equals(emiNumber))
+                .findFirst();
     }
 
     private void addTransaction(Integer emiNumber, Integer lumpSumAmount) {
@@ -81,11 +83,12 @@ public class BankStateForUser {
             totalAmountPaid = totalAmountPaid + remainingAmountToBePaid;
             remainingAmountToBePaid = 0;
             numberOfRemainingEmi = 0;
+        } else {
+            Integer differenceOfEmiInstallments = numberOfRemainingEmi - (numberOfTotalEmi - emiNumber);
+            totalAmountPaid = totalAmountPaid + (differenceOfEmiInstallments * emiAmount);
+            remainingAmountToBePaid = remainingAmountToBePaid - (differenceOfEmiInstallments * emiAmount);
+            numberOfRemainingEmi = numberOfTotalEmi - emiNumber;
         }
-        Integer differenceOfEmiInstallments = numberOfRemainingEmi - (numberOfTotalEmi - emiNumber);
-        totalAmountPaid = totalAmountPaid + (differenceOfEmiInstallments * emiAmount);
-        remainingAmountToBePaid = remainingAmountToBePaid - (differenceOfEmiInstallments * emiAmount);
-        numberOfRemainingEmi = numberOfTotalEmi - emiNumber;
     }
 
     private void addLumpSumAmount(Integer lumpSumAmount) {
